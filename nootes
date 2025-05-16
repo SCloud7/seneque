@@ -1,0 +1,3 @@
+flags
+-1O3 -marsH=native compilation
+inline pour les boucles

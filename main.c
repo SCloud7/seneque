@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/16 16:46:13 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:09:52 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	init(char **av, t_data *data, int ac)
 			data->philos[j].need_t_eat = ft_atol(av[5]);
 		else
 			data->philos[j].need_t_eat = -1;
-		printf("need eat %i\neat meal %i\nded %i\n",
+		/*printf("need eat %i\neat meal %i\nded %i\n",
 			data->philos[j].need_t_eat,
 			data->philos[j].meals_eat,
-			data->philos[j].ded);
+			data->philos[j].ded);*/
 		j++;
 	}
 
