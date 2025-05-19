@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/16 18:09:52 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:53:44 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,22 @@ void	init_p(t_data *data)
 	t_philo		fifi;
 
 	i = 0;
-	pthread_create(&jefe, NULL, &end_v, data);
-	while (data->nbr_p > i++)
+	if (pthread_create(&jefe, NULL, &end_v, data) != 0)
+		exit(-1);
+	while (i < data->nbr_p)
 	{
 		fifi = data->philos[i];
-		pthread_create(&data->philos[i].core, NULL, &routine, &fifi);
+		if (pthread_create(&data->philos[i].core, NULL, &routine, &fifi) != 0)
+			exit(-1);
+		i++;
 	}
-	pthread_join(jefe, NULL);
+	if (pthread_join(jefe, NULL) != 0)
+		exit(-1);
 	while (data->nbr_p < i--)
-		pthread_join(data->philos[i].core, NULL);
+	{
+		if (pthread_join(data->philos[i].core, NULL) != 0)
+			exit(-1);
+	}
 } 
 
 void	init(char **av, t_data *data, int ac)
@@ -65,6 +72,7 @@ void	init(char **av, t_data *data, int ac)
 		data->philos[j].time_t_sleep = ft_atol(av[4]);
 		data->philos[j].ded = 0;
 		data->philos[j].meals_eat = 0;
+		printf("l index = %i\net le i = %i\n", data->philos[j].index, j);
 		if (ac == 6)
 			data->philos[j].need_t_eat = ft_atol(av[5]);
 		else
@@ -75,21 +83,27 @@ void	init(char **av, t_data *data, int ac)
 			data->philos[j].ded);*/
 		j++;
 	}
-
 }
 
 int	main(int ac, char **av)
 {
 	t_data				*data;
 	t_philo				philo[PHILOMAX];
-	//pthread_mutex_t		forks[PHILOMAX];
 	
 	data = malloc(sizeof(t_data));
+	if (!data)
+		return (-1);
 	data->philos = philo;
 	if (ac != 5 && ac != 6)
-		return (printf("arg incorrect"), 0);
+	{
+		free(data);
+		return (printf("arg incorrect\n"), 0);
+	}
 	if (verif(av, ac) == -1)
+	{
+		free(data);
 		exit(0);
+	}
 	init(av, data, ac);
 	init_p(data);
 }
