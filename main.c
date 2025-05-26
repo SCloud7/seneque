@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/19 14:53:44 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:57:14 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ void	init_p(t_data *data)
 {
 	int			i;
 	pthread_t	jefe;
-	t_philo		fifi;
+	t_philo		*fifi;
 
 	i = 0;
 	if (pthread_create(&jefe, NULL, &end_v, data) != 0)
 		exit(-1);
 	while (i < data->nbr_p)
 	{
-		fifi = data->philos[i];
-		if (pthread_create(&data->philos[i].core, NULL, &routine, &fifi) != 0)
+		pthread_mutex_init(data->philos[i].fork, NULL);
+		fifi = &data->philos[i];
+		if (pthread_create(&data->philos[i].core, NULL, &routine, fifi) != 0)
 			exit(-1);
 		i++;
 	}
@@ -56,31 +57,38 @@ void	init_p(t_data *data)
 	}
 } 
 
-void	init(char **av, t_data *data, int ac)
+void	init(char **av, t_data *data, int ac, pthread_mutex_t *forks)
 {
 	int	i;
 	int	j;
+	int	k;
 
 	i = ft_atol(av[1]);
 	j = 0;
 	data->nbr_p = i;
 	while (j < i)
 	{
+		k = j;
 		data->philos[j].index = j + 1;
 		data->philos[j].time_t_die = ft_atol(av[2]);
 		data->philos[j].time_t_eat = ft_atol(av[3]);
 		data->philos[j].time_t_sleep = ft_atol(av[4]);
 		data->philos[j].ded = 0;
 		data->philos[j].meals_eat = 0;
-		printf("l index = %i\net le i = %i\n", data->philos[j].index, j);
+		data->philos[j].last_meal = 0;
+		data->philos[j].dt = data;
+		data->philos[j].fork = &forks[j];
 		if (ac == 6)
 			data->philos[j].need_t_eat = ft_atol(av[5]);
 		else
 			data->philos[j].need_t_eat = -1;
-		/*printf("need eat %i\neat meal %i\nded %i\n",
-			data->philos[j].need_t_eat,
-			data->philos[j].meals_eat,
-			data->philos[j].ded);*/
+		data->philos[j].next = &data->philos[(j + 1) % i];
+		data->philos[j].fork_n = &forks[(j + 1) % i];
+
+		printf("index = %i, fork = %p, fork_n = %p\n",
+			data->philos[j].index,
+			(void *)data->philos[j].fork,
+			(void *)data->philos[j].fork_n);
 		j++;
 	}
 }
@@ -89,6 +97,7 @@ int	main(int ac, char **av)
 {
 	t_data				*data;
 	t_philo				philo[PHILOMAX];
+	pthread_mutex_t		forks[PHILOMAX];
 	
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -104,6 +113,6 @@ int	main(int ac, char **av)
 		free(data);
 		exit(0);
 	}
-	init(av, data, ac);
+	init(av, data, ac, forks);
 	init_p(data);
 }

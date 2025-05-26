@@ -1,25 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/25 15:52:14 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/01/25 16:03:46 by ssoukoun         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include"philo.h"
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   blo.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/19 14:35:10 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:54:26 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +89,13 @@ int	main(int ac, char **av)
 {
 	t_data				*data;
 	t_philo				philo[PHILOMAX];
-	//pthread_mutex_t		forks[PHILOMAX];
+	pthread_mutex_t		forks[PHILOMAX];
 	
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (-1);
 	data->philos = philo;
+	data->philos = forks;
 	if (ac != 5 && ac != 6)
 		return (printf("arg incorrect"), 0);
 	if (verif(av, ac) == -1)

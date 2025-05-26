@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:34:44 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/19 14:42:42 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:37:07 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int time_to(size_t time)
 void    eat(t_philo *p1)
 {
     p1->eating = 1;
-    pthread_mutex_lock(p1->fork_r);
+    pthread_mutex_lock(p1->fork);
     printf("%i a pris une fourchette\n", p1->index);
-    pthread_mutex_lock(p1->fork_l);
+    pthread_mutex_lock(p1->fork_n);
     printf("%i a pris une deuxieme fourchette\n", p1->index);
     printf("%i is eating\n", p1->index);
     time_to(p1->time_t_eat);
-    pthread_mutex_unlock(p1->fork_r);
-    pthread_mutex_unlock(p1->fork_l);
+    pthread_mutex_unlock(p1->fork);
+    pthread_mutex_unlock(p1->fork_n);
     p1->eating = 0;
     p1->meals_eat++;
     p1->last_meal = ft_get_time();
