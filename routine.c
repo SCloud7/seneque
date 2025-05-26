@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:34:44 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 18:37:07 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:11:00 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    *end_v(void *data)
             i++;
         }
     }
-    free(data);
+    clear_data(data);
 }
 
 

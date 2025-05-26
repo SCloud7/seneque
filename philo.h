@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:34:01 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 18:35:25 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:06:50 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ void    *end_v(void*);
 size_t  ft_get_time(void);
 void    dead_verif(t_philo *p);
 void    *routine(void*cho);
+void	clear_data(t_data *data);
 #endif

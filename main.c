@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 18:57:14 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:23:37 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,21 @@ void	init_p(t_data *data)
 
 	i = 0;
 	if (pthread_create(&jefe, NULL, &end_v, data) != 0)
-		exit(-1);
+		clear_data(data);
 	while (i < data->nbr_p)
 	{
 		pthread_mutex_init(data->philos[i].fork, NULL);
 		fifi = &data->philos[i];
 		if (pthread_create(&data->philos[i].core, NULL, &routine, fifi) != 0)
-			exit(-1);
+			clear_data(data);
 		i++;
 	}
 	if (pthread_join(jefe, NULL) != 0)
-		exit(-1);
+		clear_data(data);
 	while (data->nbr_p < i--)
 	{
 		if (pthread_join(data->philos[i].core, NULL) != 0)
-			exit(-1);
+			clear_data(data);
 	}
 } 
 
@@ -115,4 +115,5 @@ int	main(int ac, char **av)
 	}
 	init(av, data, ac, forks);
 	init_p(data);
+	clear_data(data);
 }
