@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:34:44 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 19:11:00 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:38:03 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int time_to(size_t time)
 {
-    usleep(time * 1000);
+    usleep(time * 100000);
     return (0);
 }
 
@@ -22,7 +22,7 @@ void    eat(t_philo *p1)
 {
     p1->eating = 1;
     pthread_mutex_lock(p1->fork);
-    printf("%i a pris une fourchette\n", p1->index);
+    printf("%i a pris la fourchette une\n", p1->index);
     pthread_mutex_lock(p1->fork_n);
     printf("%i a pris une deuxieme fourchette\n", p1->index);
     printf("%i is eating\n", p1->index);
@@ -43,6 +43,7 @@ void    *routine(void *cho)
     {
         dead_verif(ch);
         eat(ch);
+        printf("%i amange : %i\n", ch->index, ch->meals_eat);
         printf("%i is sleeping\n", ch->index);
         dead_verif(ch);
         time_to(ch->time_t_sleep);
@@ -61,18 +62,18 @@ void    *end_v(void *data)
     while (1)
     {
         
-        i = 1;
+        i = 0;
         while (i < dateboyo->nbr_p)
         {
-            printf("need eat %i\neat meal%i\nded%i\net le i = %i\n\n\n\n",
-        dateboyo->philos[i].need_t_eat,
-        dateboyo->philos[i].meals_eat,
-        dateboyo->philos[i].ded,
-        dateboyo->philos->index);
+            printf("Looking...\n");
             if (dateboyo->philos[i].meals_eat > dateboyo->philos[i].need_t_eat)
-                return (printf("pitie %i\n", dateboyo->philos[i].meals_eat), data);
+                return (printf("tout mange %i\n", dateboyo->philos[i].meals_eat), data);
             if (dateboyo->philos[i].ded >= 1 )
-                return (printf("pitie2\n"), data);
+            {
+                clear_data(data);
+                printf("dead phiphi\n");
+                return (data);
+            }
             i++;
         }
     }

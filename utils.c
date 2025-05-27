@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:54:20 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 19:22:22 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:43:43 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,15 @@ void	clear_data(t_data *data)
 	if(!data)
 		return ;
 	i = 0;
-	while (i <= data->nbr_p)
+	while (i < data->nbr_p)
 	{
 		pthread_join(data->philos[i].core, NULL);
 		pthread_mutex_destroy(data->philos[i].fork);
 		i++;
 	}
-	pthread_mutex_destroy(&data->windows);
-	pthread_mutex_destroy(&data->dead_flag);
-	free(data->philos);
+	//pthread_mutex_destroy(&data->windows);
+	//pthread_mutex_destroy(&data->dead_flag);
+	//free(data->philos);
 	free(data);
+	exit(0);
 }

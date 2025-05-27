@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 19:23:37 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:57:36 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	init_p(t_data *data)
 		if (pthread_join(data->philos[i].core, NULL) != 0)
 			clear_data(data);
 	}
-} 
+}
 
 void	init(char **av, t_data *data, int ac, pthread_mutex_t *forks)
 {
@@ -85,10 +85,10 @@ void	init(char **av, t_data *data, int ac, pthread_mutex_t *forks)
 		data->philos[j].next = &data->philos[(j + 1) % i];
 		data->philos[j].fork_n = &forks[(j + 1) % i];
 
-		printf("index = %i, fork = %p, fork_n = %p\n",
+		/*printf("index = %i, fork = %p, fork_n = %p\n",
 			data->philos[j].index,
 			(void *)data->philos[j].fork,
-			(void *)data->philos[j].fork_n);
+			(void *)data->philos[j].fork_n);*/
 		j++;
 	}
 }
@@ -115,5 +115,6 @@ int	main(int ac, char **av)
 	}
 	init(av, data, ac, forks);
 	init_p(data);
-	clear_data(data);
+	free(data);
+	//clear_data(data);
 }
