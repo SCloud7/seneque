@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:59:00 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/27 14:57:36 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:26:23 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 int	verif(char **av, int ac)
 {
 	if (ft_atol(av[1]) <= 1 || ft_isdigit(av[1] == 0) || ft_atol(av[1]) > 200)
-		return(printf("arg incorrect"), -1);
+		return(printf("arg incorrect1"), -1);
 	if (ft_atol(av[2]) <= 0 || ft_isdigit(av[2] == 0))
-		return(printf("arg incorrect"), -1);
+		return(printf("arg incorrect2"), -1);
 	if (ft_atol(av[3]) <= 0 || ft_isdigit(av[3] == 0))
-		return(printf("arg incorrect"), -1);
+		return(printf("arg incorrect3"), -1);
 	if (ft_atol(av[4]) <= 0 || ft_isdigit(av[4] == 0))
-		return(printf("arg incorrect"), -1);
+		return(printf("arg incorrect4"), -1);
 	if(ac == 6)
 	{
 		if (ft_atol(av[5]) <= 0 || ft_isdigit(av[5] == 0))
-			return(printf("arg incorrect"), -1);
+			return(printf("arg incorrect5"), -1);
 	}
 	return (0);
 
@@ -35,22 +35,21 @@ void	init_p(t_data *data)
 {
 	int			i;
 	pthread_t	jefe;
-	t_philo		*fifi;
 
 	i = 0;
+	data->start_time = ft_get_time();
 	if (pthread_create(&jefe, NULL, &end_v, data) != 0)
 		clear_data(data);
 	while (i < data->nbr_p)
 	{
 		pthread_mutex_init(data->philos[i].fork, NULL);
-		fifi = &data->philos[i];
-		if (pthread_create(&data->philos[i].core, NULL, &routine, fifi) != 0)
+		if (pthread_create(&data->philos[i].core, NULL, &routine, &data->philos[i]) != 0)
 			clear_data(data);
 		i++;
 	}
 	if (pthread_join(jefe, NULL) != 0)
 		clear_data(data);
-	while (data->nbr_p < i--)
+	while (--i >= 0)
 	{
 		if (pthread_join(data->philos[i].core, NULL) != 0)
 			clear_data(data);
@@ -85,10 +84,13 @@ void	init(char **av, t_data *data, int ac, pthread_mutex_t *forks)
 		data->philos[j].next = &data->philos[(j + 1) % i];
 		data->philos[j].fork_n = &forks[(j + 1) % i];
 
-		/*printf("index = %i, fork = %p, fork_n = %p\n",
+		printf("index = %i, fork = %p, fork_n = %p eat %zu sleep %zu die %zu \n",
 			data->philos[j].index,
 			(void *)data->philos[j].fork,
-			(void *)data->philos[j].fork_n);*/
+			(void *)data->philos[j].fork_n,
+			data->philos[j].time_t_eat,
+			data->philos[j].time_t_sleep,
+			data->philos[j].time_t_die);
 		j++;
 	}
 }

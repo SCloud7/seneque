@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:34:44 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/27 15:38:03 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:15:14 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int time_to(size_t time)
 {
-    usleep(time * 100000);
+    usleep(time * 1000);
     return (0);
 }
 
@@ -39,15 +39,18 @@ void    *routine(void *cho)
     t_philo *ch;
 
     ch = (t_philo *)cho;
+    if (ch->index % 2 == 1)
+        usleep(1000);
     while (ch->need_t_eat != ch->meals_eat || ch->ded != 1)
     {
-        dead_verif(ch);
         eat(ch);
-        printf("%i amange : %i\n", ch->index, ch->meals_eat);
-        printf("%i is sleeping\n", ch->index);
         dead_verif(ch);
+        printf("%i a mange : %i\n", ch->index, ch->meals_eat);
+        dead_verif(ch);
+        printf("%i is sleeping\n", ch->index);
         time_to(ch->time_t_sleep);
         printf("%i is thinking\n", ch->index);
+        dead_verif(ch);
     }
     return(cho) ;
 }
@@ -55,25 +58,27 @@ void    *routine(void *cho)
 void    *end_v(void *data)
 {
     int i;
+    int j;
     t_data *dateboyo;
 
     i = 0;
     dateboyo = (t_data*) data;
+    j = dateboyo->philos->need_t_eat;
     while (1)
     {
-        
         i = 0;
         while (i < dateboyo->nbr_p)
         {
-            printf("Looking...\n");
-            if (dateboyo->philos[i].meals_eat > dateboyo->philos[i].need_t_eat)
-                return (printf("tout mange %i\n", dateboyo->philos[i].meals_eat), data);
+            //printf("Looking...\n");
+            if (dateboyo->philos[i].meals_eat > dateboyo->philos[i].need_t_eat && j != -1)
+                return (printf("tout mange %i\n", dateboyo->philos[i].need_t_eat), data);
             if (dateboyo->philos[i].ded >= 1 )
             {
                 clear_data(data);
                 printf("dead phiphi\n");
                 return (data);
             }
+            usleep(100);
             i++;
         }
     }
@@ -91,7 +96,9 @@ size_t  ft_get_time(void)
 
 void    dead_verif(t_philo *p)
 {
-    if (ft_get_time() - p->last_meal > p->time_t_die)
-        p->ded = 1;
-
+    size_t start;
+    
+    start = p->dt->start_time;
+    if (start - p->last_meal > p->time_t_die)
+        p->dt->dead_flag = 1;
 }

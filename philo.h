@@ -6,7 +6,7 @@
 /*   By: ssoukoun <ssoukoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:34:01 by ssoukoun          #+#    #+#             */
-/*   Updated: 2025/05/26 19:06:50 by ssoukoun         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:14:46 by ssoukoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ typedef struct s_data
 {
 	t_philo					*philos;
 	int						meals;
-	pthread_mutex_t			dead_flag;
+	int						dead_flag;
 	pthread_mutex_t			windows;
 	int			f_t_eat;
 	int			nbr_p;
+	size_t			start_time;
 }   t_data;
 struct s_philo
 {
